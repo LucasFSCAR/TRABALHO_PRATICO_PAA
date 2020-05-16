@@ -1,6 +1,7 @@
 #include "cidade.hpp"
 #include <vector>
-
+#ifndef CAIXEIRO_HPP
+#define CAIXEIRO_HPP
 class CaixeiroViajante
 {
 
@@ -14,3 +15,4 @@ public:
     void caixeiroViajanteDinamico();
     void caixeiroViajanteGenetico();
 };
+#endif
