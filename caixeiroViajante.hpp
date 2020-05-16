@@ -1,7 +1,9 @@
-#include "cidade.hpp"
-#include <vector>
 #ifndef CAIXEIRO_HPP
 #define CAIXEIRO_HPP
+#include "cidade.hpp"
+#include <vector>
+#include <string>
+
 class CaixeiroViajante
 {
 
@@ -14,5 +16,9 @@ public:
     void caixeiroViajanteBranchAndBound();
     void caixeiroViajanteDinamico();
     void caixeiroViajanteGenetico();
+
+    void permutacao(int n, int k, int valores[], bool used[]);
+    double calcularDistancia(Cidade a, Cidade b);
+    
 };
 #endif
