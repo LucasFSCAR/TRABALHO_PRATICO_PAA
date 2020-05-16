@@ -32,3 +32,17 @@ void Cidade::setCoordenadaY(int _coordenadaY)
 {
     coordenadaY = _coordenadaY;
 }
+
+Cidade::Cidade()
+{
+    id = 0;
+    coordenadaX = 0;
+    coordenadaY = 0;
+}
+
+Cidade::Cidade(int _id, int _coordenadaX, int _coordenadaY)
+{
+    id = _id;
+    coordenadaX = _coordenadaX;
+    coordenadaY = _coordenadaY;
+}
