@@ -56,7 +56,6 @@ int main()
     clock_t fim1 = clock();
 
     cv.limpar();
-    //cout << "\n\n";
 
     clock_t inicio2 = clock();
         cv.caixeiroViajanteForcaBruta();
@@ -65,8 +64,8 @@ int main()
     double tempoDecorrido1 = double(fim1 - inicio1) / CLOCKS_PER_SEC;
     double tempoDecorrido2 = double(fim2 - inicio2) / CLOCKS_PER_SEC;
 
-    cout << "Dinamico: " << tempoDecorrido1 << "\n\n\n";
-    cout << "Força Bruta: " << tempoDecorrido2 << "\n\n\n";
+    cout << "\n\nDinamico: " << tempoDecorrido1 << "\n\n";
+    cout << "Força Bruta: " << tempoDecorrido2 << "\n\n";
 
     return 0;
 }

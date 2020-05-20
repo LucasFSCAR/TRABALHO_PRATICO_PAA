@@ -104,8 +104,8 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
     }
     resposta = resp;
 
-    //cout << "Distancia: " <<  distanciaMinima << "\n";
-    //cout << "Reposta: " << resposta;
+    cout << "Distancia: " <<  distanciaMinima << "\n";
+    cout << "Reposta: " << resposta << "\n";
 }
 
 
@@ -118,7 +118,7 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
     int valores[n];
     bool used[100];
     vector<string> result;
-    map<int, int> resultadosAnteriores; // TODO: Transformar para double
+    map<int, double> resultadosAnteriores;
 
     for (int i = 0; i < n-1; i++) {
         valores[i] = i+1;
@@ -132,17 +132,17 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
             int cidadeA = int(resultPerm[i].at(j)) - 48;
             int cidadeB = int(resultPerm[i].at(j+1)) - 48;
             int posicao = concatenar(cidadeA, cidadeB);
-            auto it = resultadosAnteriores.find(posicao);
-            int distancia = 0;
-            if (false && it != resultadosAnteriores.end()) {
-                distancia = resultadosAnteriores.at(posicao);
+
+            double distancia = 0;
+            if (resultadosAnteriores[posicao] != 0) {
+                distancia = resultadosAnteriores[posicao];
             } else {
                 distancia = calcularDistancia( cidades[cidadeA], cidades[cidadeB] );
             }
             somaDistancia = somaDistancia + distancia;
 
             posicao = concatenar(cidadeA, cidadeB);
-            resultadosAnteriores.insert( {posicao, int(distancia)} );
+            resultadosAnteriores.insert( {posicao, distancia} );
         }
         if (somaDistancia < distanciaMinima) {
             distanciaMinima = somaDistancia;
@@ -157,8 +157,8 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
     }
     resposta = resp;
 
-    //cout << "Distancia: " <<  distanciaMinima << "\n";
-    //cout << "Reposta: " << resposta;
+    cout << "Distancia: " <<  distanciaMinima << "\n";
+    cout << "Reposta: " << resposta << "\n";
 }
 
 
