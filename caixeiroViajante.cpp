@@ -6,6 +6,7 @@
 #include <cmath>
 #include <limits.h>
 #include <float.h>
+#include <bits/stdc++.h> 
 
 
 using namespace std;
@@ -47,6 +48,10 @@ double CaixeiroViajante::calcularDistancia(Cidade a, Cidade b){
     return resultado;
 }
 
+void CaixeiroViajante::limpar(){
+    resultPerm.clear();
+}
+
 
 /* Metodos principais
 */
@@ -74,8 +79,8 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
         resultPerm[i] = "0" + resultPerm[i] + "0";
         double somaDistancia = 0.0;
         for (int j = 0; j < resultPerm[i].length() - 1; j++) {
-            int cidadeA = int(resultPerm[i].at(j))-48;
-            int cidadeB = int(resultPerm[i].at(j+1))-48;
+            int cidadeA = int(resultPerm[i].at(j)) - 48;
+            int cidadeB = int(resultPerm[i].at(j+1)) - 48;
             somaDistancia = somaDistancia + calcularDistancia( cidades[cidadeA], cidades[cidadeB] );
         }
         if (somaDistancia < distanciaMinima) {
@@ -91,16 +96,67 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
     }
     resposta = resp;
 
-    cout << "Distancia: " <<  distanciaMinima << "\n";
-    cout << "Reposta: " << resposta;
-
+    //cout << "Distancia: " <<  distanciaMinima << "\n";
+    //cout << "Reposta: " << resposta;
 }
 
-void CaixeiroViajante::caixeiroViajanteBranchAndBound()
-{
-}
 
 void CaixeiroViajante::caixeiroViajanteDinamico()
+{
+    double distanciaMinima = DBL_MAX;
+    string resposta = "";
+
+    int n = cidades.size();
+    int valores[n];
+    bool used[100];
+    vector<string> result;
+    map<int, int> resultadosAnteriores; // TODO: Transformar para double
+
+    for (int i = 0; i < n-1; i++) {
+        valores[i] = i+1;
+    }
+    permutacao(n-1, 0, valores, used);
+
+    for (int i = 0; i < resultPerm.size(); i++) {
+
+        resultPerm[i] = "0" + resultPerm[i] + "0";
+        double somaDistancia = 0.0;
+        for (int j = 0; j < resultPerm[i].length() - 1; j++) {
+            int cidadeA = int(resultPerm[i].at(j)) - 48;
+            int cidadeB = int(resultPerm[i].at(j+1)) - 48;
+            int posicao = std::stoi( to_string(cidadeA) + to_string(cidadeB) );
+            auto it = resultadosAnteriores.find(posicao);
+            int distancia = 0;
+
+            if (false && it != resultadosAnteriores.end()) {
+                distancia = resultadosAnteriores.at(posicao);
+            } else {
+                distancia = calcularDistancia( cidades[cidadeA], cidades[cidadeB] );
+            }
+            somaDistancia = somaDistancia + distancia;
+
+            posicao = std::stoi( to_string(cidadeA) + to_string(cidadeB) );
+            resultadosAnteriores.insert( {posicao, int(distancia)} );
+        }
+        if (somaDistancia < distanciaMinima) {
+            distanciaMinima = somaDistancia;
+            resposta = resultPerm[i];
+        }
+    }
+
+    string resp = "";
+    for (int i = 0; i < resposta.length() - 1; i++) {
+        int temp = int(resposta.at(i)) - 48 + 1;
+        resp = resp + to_string(temp);
+    }
+    resposta = resp;
+
+    //cout << "Distancia: " <<  distanciaMinima << "\n";
+    //cout << "Reposta: " << resposta;
+}
+
+
+void CaixeiroViajante::caixeiroViajanteBranchAndBound()
 {
 }
 
