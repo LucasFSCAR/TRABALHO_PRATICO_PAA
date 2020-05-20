@@ -21,7 +21,7 @@ int main()
     Cidade cidade4(5, 500, 500);
     Cidade cidade5(1, 100, 100);
     Cidade cidade6(2, 900, 100);
-    //Cidade cidade7(3, 900, 900);
+    Cidade cidade7(3, 900, 900);
     //Cidade cidade8(4, 100, 900);
     //Cidade cidade9(5, 500, 500);
     //Cidade cidade10(1, 100, 100);
@@ -38,7 +38,7 @@ int main()
     lista.push_back(cidade4);
     lista.push_back(cidade5);
     lista.push_back(cidade6);
-    //lista.push_back(cidade7);
+    lista.push_back(cidade7);
     //lista.push_back(cidade8);
     //lista.push_back(cidade9);
     //lista.push_back(cidade10);

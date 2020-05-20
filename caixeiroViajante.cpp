@@ -140,8 +140,6 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
                 distancia = calcularDistancia( cidades[cidadeA], cidades[cidadeB] );
             }
             somaDistancia = somaDistancia + distancia;
-
-            posicao = concatenar(cidadeA, cidadeB);
             resultadosAnteriores.insert( {posicao, distancia} );
         }
         if (somaDistancia < distanciaMinima) {
