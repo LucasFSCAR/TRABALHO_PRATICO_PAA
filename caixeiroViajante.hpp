@@ -20,6 +20,7 @@ public:
     void permutacao(int n, int k, int valores[], bool used[]);
     double calcularDistancia(Cidade a, Cidade b);
     void limpar();
+    int concatenar(int x, int y);
 
 };
 #endif

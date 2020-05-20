@@ -52,6 +52,14 @@ void CaixeiroViajante::limpar(){
     resultPerm.clear();
 }
 
+int CaixeiroViajante::concatenar(int x, int y) {
+    int pow = 10;
+    while(y >= pow)
+        pow *= 10;
+    return x * pow + y;
+}
+
+
 
 /* Metodos principais
 */
@@ -118,16 +126,14 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
     permutacao(n-1, 0, valores, used);
 
     for (int i = 0; i < resultPerm.size(); i++) {
-
         resultPerm[i] = "0" + resultPerm[i] + "0";
         double somaDistancia = 0.0;
         for (int j = 0; j < resultPerm[i].length() - 1; j++) {
             int cidadeA = int(resultPerm[i].at(j)) - 48;
             int cidadeB = int(resultPerm[i].at(j+1)) - 48;
-            int posicao = std::stoi( to_string(cidadeA) + to_string(cidadeB) );
+            int posicao = concatenar(cidadeA, cidadeB);
             auto it = resultadosAnteriores.find(posicao);
             int distancia = 0;
-
             if (false && it != resultadosAnteriores.end()) {
                 distancia = resultadosAnteriores.at(posicao);
             } else {
@@ -135,7 +141,7 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
             }
             somaDistancia = somaDistancia + distancia;
 
-            posicao = std::stoi( to_string(cidadeA) + to_string(cidadeB) );
+            posicao = concatenar(cidadeA, cidadeB);
             resultadosAnteriores.insert( {posicao, int(distancia)} );
         }
         if (somaDistancia < distanciaMinima) {
@@ -163,3 +169,11 @@ void CaixeiroViajante::caixeiroViajanteBranchAndBound()
 void CaixeiroViajante::caixeiroViajanteGenetico()
 {
 }
+
+
+
+// x = 123
+//y = 12
+///12312
+//concat = (x+y)(x+y+1)/2 + y
+

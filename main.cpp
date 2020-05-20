@@ -56,6 +56,7 @@ int main()
     clock_t fim1 = clock();
 
     cv.limpar();
+    //cout << "\n\n";
 
     clock_t inicio2 = clock();
         cv.caixeiroViajanteForcaBruta();
@@ -68,6 +69,10 @@ int main()
     cout << "Força Bruta: " << tempoDecorrido2 << "\n\n\n";
 
     return 0;
+}
+
+void programa() {
+
 }
 
 void lerEntrada() {
@@ -90,9 +95,7 @@ void lerEntrada() {
 
         entrada1 = array[0];
         entrada2 = array[1];
-        
-        //cout << entrada1 << " " << entrada2 << endl;
-        
-        //FAZER O QUE FOR NECESSARIO
+               
+        programa();
     }
 }
