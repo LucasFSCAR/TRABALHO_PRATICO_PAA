@@ -21,6 +21,7 @@ public:
     double calcularDistancia(Cidade a, Cidade b);
     void limpar();
     int concatenar(int x, int y);
-
+    int charParaInteiro(char c);
+    void montaResposta(std::string s, double d);
 };
 #endif
