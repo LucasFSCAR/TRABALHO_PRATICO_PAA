@@ -75,15 +75,16 @@ int CaixeiroViajante::charParaInteiro(char c)
 void CaixeiroViajante::montaResposta(string caminho, double distancia)
 {
     string resp = "";
-
     for (int i = 0; i < caminho.length() - 1; i++)
     {
         int temp = charParaInteiro(caminho.at(i)) + 1;
         resp = resp + " " + to_string(temp);
     }
 
+    caminho = resp;
+
     cout << "Distancia: " << distancia << "\n";
-    cout << "Reposta: " << resp << "\n";
+    cout << "Reposta: " << caminho << "\n";
 }
 
 /* Metodos principais
@@ -107,6 +108,7 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
     {
         valores[i] = i + 1;
     }
+
     permutacao(n - 1, 0, valores, used);
 
     for (int i = 0; i < resultPerm.size(); i++)
@@ -192,6 +194,46 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
 
 void CaixeiroViajante::caixeiroViajanteBranchAndBound()
 {
+    double distanciaMinima = DBL_MAX;
+    string resposta = "";
+
+    int n = cidades.size();
+    int valores[n];
+    bool used[100];
+    vector<string> result;
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        valores[i] = i + 1;
+    }
+
+    permutacao(n - 1, 0, valores, used);
+
+    for (int i = 0; i < resultPerm.size(); i++)
+    {
+        resultPerm[i] = "0" + resultPerm[i] + "0";
+        double somaDistancia = 0.0;
+        for (int j = 0; j < resultPerm[i].length() - 1; j++)
+        {
+            int cidadeA = charParaInteiro(resultPerm[i].at(j));
+            int cidadeB = charParaInteiro(resultPerm[i].at(j + 1));
+
+            if (somaDistancia > distanciaMinima)
+            {
+                j = resultPerm[i].length();
+            }
+
+            somaDistancia = somaDistancia + calcularDistancia(cidades[cidadeA], cidades[cidadeB]);
+        }
+
+        if (somaDistancia < distanciaMinima)
+        {
+            distanciaMinima = somaDistancia;
+            resposta = resultPerm[i];
+        }
+    }
+
+    montaResposta(resposta, distanciaMinima);
 }
 
 void CaixeiroViajante::caixeiroViajanteGenetico()
