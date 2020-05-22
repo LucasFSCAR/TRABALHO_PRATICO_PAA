@@ -79,11 +79,11 @@ void CaixeiroViajante::montaResposta(string caminho, double distancia)
     for (int i = 0; i < caminho.length() - 1; i++)
     {
         int temp = charParaInteiro(caminho.at(i)) + 1;
-        resp = resp + to_string(temp);
+        resp = resp + " " + to_string(temp);
     }
 
     cout << "Distancia: " << distancia << "\n";
-    cout << "Reposta: " << caminho << "\n";
+    cout << "Reposta: " << resp << "\n";
 }
 
 /* Metodos principais
@@ -138,12 +138,22 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
     int valores[n];
     bool used[100];
     vector<string> result;
-    map<int, double> resultadosAnteriores;
+    double matriz[n][n];
+
+    //inicializa a matriz
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            matriz[i][j] = 0;
+        }
+    }
 
     for (int i = 0; i < n - 1; i++)
     {
         valores[i] = i + 1;
     }
+
     permutacao(n - 1, 0, valores, used);
 
     for (int i = 0; i < resultPerm.size(); i++)
@@ -154,20 +164,22 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
         {
             int cidadeA = charParaInteiro(resultPerm[i].at(j));
             int cidadeB = charParaInteiro(resultPerm[i].at(j + 1));
-            int posicao = concatenar(cidadeA, cidadeB);
 
             double distancia = 0;
-            if (resultadosAnteriores[posicao] != 0)
+
+            if (matriz[cidadeA][cidadeB] != 0)
             {
-                distancia = resultadosAnteriores[posicao];
+                distancia = matriz[cidadeA][cidadeB];
             }
             else
             {
                 distancia = calcularDistancia(cidades[cidadeA], cidades[cidadeB]);
+                matriz[cidadeA][cidadeB] = distancia;
             }
+
             somaDistancia = somaDistancia + distancia;
-            resultadosAnteriores.insert({posicao, distancia});
         }
+
         if (somaDistancia < distanciaMinima)
         {
             distanciaMinima = somaDistancia;
