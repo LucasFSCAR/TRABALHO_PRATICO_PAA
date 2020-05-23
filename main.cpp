@@ -46,32 +46,34 @@ int main()
 
     CaixeiroViajante cv(lista);
 
-    cout << "Força Bruta \n";
+    cv.caixeiroViajanteGenetico();
 
-    clock_t inicio1 = clock();
-    cv.caixeiroViajanteForcaBruta();
-    clock_t fim1 = clock();
-    double tempoDecorrido1 = double(fim1 - inicio1) / CLOCKS_PER_SEC;
+    // cout << "Força Bruta \n";
 
-    cout << "Tempo: " << tempoDecorrido1 << "\n\n";
+    // clock_t inicio1 = clock();
+    // cv.caixeiroViajanteForcaBruta();
+    // clock_t fim1 = clock();
+    // double tempoDecorrido1 = double(fim1 - inicio1) / CLOCKS_PER_SEC;
 
-    cout << "Branch And Bound \n";
+    // cout << "Tempo: " << tempoDecorrido1 << "\n\n";
 
-    clock_t inicio2 = clock();
-    cv.caixeiroViajanteBranchAndBound();
-    clock_t fim2 = clock();
-    double tempoDecorrido2 = double(fim2 - inicio2) / CLOCKS_PER_SEC;
+    // cout << "Branch And Bound \n";
 
-    cout << "Tempo: " << tempoDecorrido2 << "\n\n";
+    // clock_t inicio2 = clock();
+    // cv.caixeiroViajanteBranchAndBound();
+    // clock_t fim2 = clock();
+    // double tempoDecorrido2 = double(fim2 - inicio2) / CLOCKS_PER_SEC;
 
-    cout << "Dinamico \n";
+    // cout << "Tempo: " << tempoDecorrido2 << "\n\n";
 
-    clock_t inicio3 = clock();
-    cv.caixeiroViajanteDinamico();
-    clock_t fim3 = clock();
+    // cout << "Dinamico \n";
 
-    double tempoDecorrido3 = double(fim3 - inicio3) / CLOCKS_PER_SEC;
-    cout << "Tempo: " << tempoDecorrido3 << "\n";
+    // clock_t inicio3 = clock();
+    // cv.caixeiroViajanteDinamico();
+    // clock_t fim3 = clock();
+
+    // double tempoDecorrido3 = double(fim3 - inicio3) / CLOCKS_PER_SEC;
+    // cout << "Tempo: " << tempoDecorrido3 << "\n";
 
     return 0;
 }
