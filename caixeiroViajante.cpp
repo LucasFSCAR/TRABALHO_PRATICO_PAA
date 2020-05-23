@@ -21,7 +21,7 @@ void CaixeiroViajante::permutacao(int n, int k, int valores[], bool used[])
         string value = "";
         for (int i = 0; i < n; i++)
         {
-            if (i < 9) {
+            if (i <= 9) {
                 value = value + '0' + to_string(valores[i]);
             } else {
                 value = value + to_string(valores[i]);
@@ -119,10 +119,14 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
     }
 
     permutacao(n - 1, 0, valores, used);
+ // 00 10 09 08 07 06 05 04 03 02 01 00
+
+//000100908070605040302100
 
     for (int i = 0; i < resultPerm.size(); i++)
     {
         resultPerm[i] = "00" + resultPerm[i] + "00";
+        cout << resultPerm[i] << "\n";
         double somaDistancia = 0.0;
         for (int j = 0; j < resultPerm[i].length() - 2; j+=2)
         {
@@ -131,6 +135,7 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
 
             somaDistancia = somaDistancia + calcularDistancia(cidades[cidadeA], cidades[cidadeB]);
         }
+
         if (somaDistancia < distanciaMinima)
         {
             distanciaMinima = somaDistancia;
