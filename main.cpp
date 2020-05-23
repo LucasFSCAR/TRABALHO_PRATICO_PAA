@@ -73,11 +73,10 @@ void lerEntrada(vector<Cidade> &lista)
 {
     int coordenadaX, coordenadaY;
     bool read = false;
+    int i = 1;
 
     for (string line; getline(cin, line);)
     {
-        int i = 1;
-
         if (read == false)
         {
             read = true;
