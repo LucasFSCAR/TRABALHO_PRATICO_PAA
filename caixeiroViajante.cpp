@@ -21,8 +21,13 @@ void CaixeiroViajante::permutacao(int n, int k, int valores[], bool used[])
         string value = "";
         for (int i = 0; i < n; i++)
         {
-            value = value + to_string(valores[i]);
+            if (i < 9) {
+                value = value + '0' + to_string(valores[i]);
+            } else {
+                value = value + to_string(valores[i]);
+            }
         }
+
         resultPerm.push_back(value);
     }
     else
@@ -61,10 +66,11 @@ void CaixeiroViajante::limpar()
 
 int CaixeiroViajante::concatenar(int x, int y)
 {
+    if (x == 0) return y;
     int pow = 10;
     while (y >= pow)
         pow *= 10;
-    return x * pow + y;
+    return x * pow + y ;
 }
 
 int CaixeiroViajante::charParaInteiro(char c)
@@ -72,15 +78,19 @@ int CaixeiroViajante::charParaInteiro(char c)
     return int(c) - 48;
 }
 
+int CaixeiroViajante::doisCharParaInteiro(char a, char b)
+{
+    return concatenar( int(a) - 48, int(b) - 48 );
+}
+
 void CaixeiroViajante::montaResposta(string caminho, double distancia)
 {
     string resp = "";
-    for (int i = 0; i < caminho.length() - 1; i++)
+    for (int i = 0; i < caminho.length() - 2; i+=2)
     {
-        int temp = charParaInteiro(caminho.at(i)) + 1;
-        resp = resp + " " + to_string(temp);
+        int item = doisCharParaInteiro(caminho.at(i), caminho.at(i+1)) + 1;
+        resp = resp + " " + to_string(item);
     }
-
     caminho = resp;
 
     cout << "Distancia: " << distancia << "\n";
@@ -111,14 +121,19 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
 
     permutacao(n - 1, 0, valores, used);
 
+    for (int i = 0; i < resultPerm.size(); i++) {
+        cout << resultPerm[i] << "\n";
+    }
+
     for (int i = 0; i < resultPerm.size(); i++)
     {
-        resultPerm[i] = "0" + resultPerm[i] + "0";
+        resultPerm[i] = "00" + resultPerm[i] + "00";
         double somaDistancia = 0.0;
-        for (int j = 0; j < resultPerm[i].length() - 1; j++)
+        for (int j = 0; j < resultPerm[i].length() - 2; j+=2)
         {
-            int cidadeA = charParaInteiro(resultPerm[i].at(j));
-            int cidadeB = charParaInteiro(resultPerm[i].at(j + 1));
+            int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j+1));
+            int cidadeB = doisCharParaInteiro(resultPerm[i].at(j+2), resultPerm[i].at(j+3));
+
             somaDistancia = somaDistancia + calcularDistancia(cidades[cidadeA], cidades[cidadeB]);
         }
         if (somaDistancia < distanciaMinima)
