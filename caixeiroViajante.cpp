@@ -105,6 +105,7 @@ CaixeiroViajante::CaixeiroViajante(std::vector<Cidade> _cidades)
 
 void CaixeiroViajante::caixeiroViajanteForcaBruta()
 {
+    limpar();
     double distanciaMinima = DBL_MAX;
     string resposta = "";
     int canPrint = 0;
@@ -146,6 +147,7 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
 
 void CaixeiroViajante::caixeiroViajanteDinamico()
 {
+    limpar();
     double distanciaMinima = DBL_MAX;
     string resposta = "";
 
@@ -207,6 +209,7 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
 
 void CaixeiroViajante::caixeiroViajanteBranchAndBound()
 {
+    limpar();
     double distanciaMinima = DBL_MAX;
     string resposta = "";
 
@@ -226,7 +229,7 @@ void CaixeiroViajante::caixeiroViajanteBranchAndBound()
     {
         resultPerm[i] = "00" + resultPerm[i] + "00";
         double somaDistancia = 0.0;
-        for (int j = 0; j < resultPerm[i].length() - 2; j+=2)
+        for (int j = 0; j < resultPerm[i].length() - 3; j+=2)
         {
             int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j+1));
             int cidadeB = doisCharParaInteiro(resultPerm[i].at(j+2), resultPerm[i].at(j+3));
@@ -251,4 +254,5 @@ void CaixeiroViajante::caixeiroViajanteBranchAndBound()
 
 void CaixeiroViajante::caixeiroViajanteGenetico()
 {
+    limpar();
 }

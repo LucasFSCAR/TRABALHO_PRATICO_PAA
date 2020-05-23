@@ -50,27 +50,21 @@ int main()
     cv.caixeiroViajanteDinamico();
     clock_t fim1 = clock();
 
-    cv.limpar();
-
     clock_t inicio2 = clock();
     cv.caixeiroViajanteForcaBruta();
     clock_t fim2 = clock();
 
-    //cv.limpar();
-
-    //clock_t inicio3 = clock();
-    //cv.caixeiroViajanteBranchAndBound();
-    //clock_t fim3 = clock();
-
-    //cv.limpar();
+    clock_t inicio3 = clock();
+    cv.caixeiroViajanteBranchAndBound();
+    clock_t fim3 = clock();
 
     double tempoDecorrido1 = double(fim1 - inicio1) / CLOCKS_PER_SEC;
     double tempoDecorrido2 = double(fim2 - inicio2) / CLOCKS_PER_SEC;
-    //double tempoDecorrido3 = double(fim3 - inicio3) / CLOCKS_PER_SEC;
+    double tempoDecorrido3 = double(fim3 - inicio3) / CLOCKS_PER_SEC;
 
     cout << "\n\nDinamico: " << tempoDecorrido1 << "\n\n";
     cout << "Força Bruta: " << tempoDecorrido2 << "\n\n";
-    //cout << "Branch And Bound: " << tempoDecorrido3 << "\n\n";
+    cout << "Branch And Bound: " << tempoDecorrido3 << "\n\n";
 
     return 0;
 }
