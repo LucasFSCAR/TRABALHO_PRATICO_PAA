@@ -21,7 +21,7 @@ void CaixeiroViajante::permutacao(int n, int k, int valores[], bool used[])
         string value = "";
         for (int i = 0; i < n; i++)
         {
-            if (i <= 9) {
+            if (valores[i] < 10) {
                 value = value + '0' + to_string(valores[i]);
             } else {
                 value = value + to_string(valores[i]);
@@ -107,6 +107,7 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
 {
     double distanciaMinima = DBL_MAX;
     string resposta = "";
+    int canPrint = 0;
 
     int n = cidades.size();
     int valores[n];
@@ -119,16 +120,13 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
     }
 
     permutacao(n - 1, 0, valores, used);
- // 00 10 09 08 07 06 05 04 03 02 01 00
-
-//000100908070605040302100
 
     for (int i = 0; i < resultPerm.size(); i++)
     {
         resultPerm[i] = "00" + resultPerm[i] + "00";
-        cout << resultPerm[i] << "\n";
+
         double somaDistancia = 0.0;
-        for (int j = 0; j < resultPerm[i].length() - 2; j+=2)
+        for (int j = 0; j < resultPerm[i].length() - 3; j+=2)
         {
             int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j+1));
             int cidadeB = doisCharParaInteiro(resultPerm[i].at(j+2), resultPerm[i].at(j+3));
@@ -177,7 +175,7 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
     {
         resultPerm[i] = "00" + resultPerm[i] + "00";
         double somaDistancia = 0.0;
-        for (int j = 0; j < resultPerm[i].length() - 2; j+=2)
+        for (int j = 0; j < resultPerm[i].length() - 3; j+=2)
         {
             int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j+1));
             int cidadeB = doisCharParaInteiro(resultPerm[i].at(j+2), resultPerm[i].at(j+3));
