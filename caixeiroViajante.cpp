@@ -27,7 +27,6 @@ void CaixeiroViajante::permutacao(int n, int k, int valores[], bool used[])
                 value = value + to_string(valores[i]);
             }
         }
-
         resultPerm.push_back(value);
     }
     else
@@ -121,10 +120,6 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
 
     permutacao(n - 1, 0, valores, used);
 
-    for (int i = 0; i < resultPerm.size(); i++) {
-        cout << resultPerm[i] << "\n";
-    }
-
     for (int i = 0; i < resultPerm.size(); i++)
     {
         resultPerm[i] = "00" + resultPerm[i] + "00";
@@ -175,12 +170,12 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
 
     for (int i = 0; i < resultPerm.size(); i++)
     {
-        resultPerm[i] = "0" + resultPerm[i] + "0";
+        resultPerm[i] = "00" + resultPerm[i] + "00";
         double somaDistancia = 0.0;
-        for (int j = 0; j < resultPerm[i].length() - 1; j++)
+        for (int j = 0; j < resultPerm[i].length() - 2; j+=2)
         {
-            int cidadeA = charParaInteiro(resultPerm[i].at(j));
-            int cidadeB = charParaInteiro(resultPerm[i].at(j + 1));
+            int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j+1));
+            int cidadeB = doisCharParaInteiro(resultPerm[i].at(j+2), resultPerm[i].at(j+3));
 
             double distancia = 0;
 
@@ -226,12 +221,12 @@ void CaixeiroViajante::caixeiroViajanteBranchAndBound()
 
     for (int i = 0; i < resultPerm.size(); i++)
     {
-        resultPerm[i] = "0" + resultPerm[i] + "0";
+        resultPerm[i] = "00" + resultPerm[i] + "00";
         double somaDistancia = 0.0;
-        for (int j = 0; j < resultPerm[i].length() - 1; j++)
+        for (int j = 0; j < resultPerm[i].length() - 2; j+=2)
         {
-            int cidadeA = charParaInteiro(resultPerm[i].at(j));
-            int cidadeB = charParaInteiro(resultPerm[i].at(j + 1));
+            int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j+1));
+            int cidadeB = doisCharParaInteiro(resultPerm[i].at(j+2), resultPerm[i].at(j+3));
 
             if (somaDistancia > distanciaMinima)
             {
