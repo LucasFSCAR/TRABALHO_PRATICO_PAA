@@ -13,6 +13,8 @@ vector<string> resultPerm;
 
 /* Metodos auxiliares
 */
+
+//Metodo para criar todas permutacoes de tamanho n
 void CaixeiroViajante::permutacao(int n, int k, int valores[], bool used[])
 {
     int i;
@@ -21,9 +23,12 @@ void CaixeiroViajante::permutacao(int n, int k, int valores[], bool used[])
         string value = "";
         for (int i = 0; i < n; i++)
         {
-            if (valores[i] < 10) {
+            if (valores[i] < 10)
+            {
                 value = value + '0' + to_string(valores[i]);
-            } else {
+            }
+            else
+            {
                 value = value + to_string(valores[i]);
             }
         }
@@ -44,6 +49,7 @@ void CaixeiroViajante::permutacao(int n, int k, int valores[], bool used[])
     }
 }
 
+// calcula a distancia entre duas cidades
 double CaixeiroViajante::calcularDistancia(Cidade a, Cidade b)
 {
     int x1 = a.getCoordenadaX();
@@ -58,36 +64,42 @@ double CaixeiroViajante::calcularDistancia(Cidade a, Cidade b)
     return resultado;
 }
 
+// limpa a lista de permutacoes
 void CaixeiroViajante::limpar()
 {
     resultPerm.clear();
 }
 
+// combina dois inteiros em somente um
 int CaixeiroViajante::concatenar(int x, int y)
 {
-    if (x == 0) return y;
+    if (x == 0)
+        return y;
     int pow = 10;
     while (y >= pow)
         pow *= 10;
-    return x * pow + y ;
+    return x * pow + y;
 }
 
+// cast de char para int
 int CaixeiroViajante::charParaInteiro(char c)
 {
     return int(c) - 48;
 }
 
+// cast de dois char para inteiro
 int CaixeiroViajante::doisCharParaInteiro(char a, char b)
 {
-    return concatenar( int(a) - 48, int(b) - 48 );
+    return concatenar(int(a) - 48, int(b) - 48);
 }
 
+// ajusta e mostra a resposta na tela
 void CaixeiroViajante::montaResposta(string caminho, double distancia)
 {
     string resp = "";
-    for (int i = 0; i < caminho.length() - 2; i+=2)
+    for (int i = 0; i < caminho.length() - 2; i += 2)
     {
-        int item = doisCharParaInteiro(caminho.at(i), caminho.at(i+1)) + 1;
+        int item = doisCharParaInteiro(caminho.at(i), caminho.at(i + 1)) + 1;
         resp = resp + " " + to_string(item);
     }
     caminho = resp;
@@ -98,14 +110,15 @@ void CaixeiroViajante::montaResposta(string caminho, double distancia)
 
 /* Metodos principais
 */
+// Construtor
 CaixeiroViajante::CaixeiroViajante(std::vector<Cidade> _cidades)
 {
     cidades = _cidades;
 }
 
+// Metodo do caixeiro viajante usando forca bruta
 void CaixeiroViajante::caixeiroViajanteForcaBruta()
 {
-    limpar();
     double distanciaMinima = DBL_MAX;
     string resposta = "";
     int canPrint = 0;
@@ -127,10 +140,10 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
         resultPerm[i] = "00" + resultPerm[i] + "00";
 
         double somaDistancia = 0.0;
-        for (int j = 0; j < resultPerm[i].length() - 3; j+=2)
+        for (int j = 0; j < resultPerm[i].length() - 3; j += 2)
         {
-            int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j+1));
-            int cidadeB = doisCharParaInteiro(resultPerm[i].at(j+2), resultPerm[i].at(j+3));
+            int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j + 1));
+            int cidadeB = doisCharParaInteiro(resultPerm[i].at(j + 2), resultPerm[i].at(j + 3));
 
             somaDistancia = somaDistancia + calcularDistancia(cidades[cidadeA], cidades[cidadeB]);
         }
@@ -145,6 +158,7 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
     montaResposta(resposta, distanciaMinima);
 }
 
+// Metodo do caixeiro viajante usando programacao dinamica
 void CaixeiroViajante::caixeiroViajanteDinamico()
 {
     limpar();
@@ -177,10 +191,10 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
     {
         resultPerm[i] = "00" + resultPerm[i] + "00";
         double somaDistancia = 0.0;
-        for (int j = 0; j < resultPerm[i].length() - 3; j+=2)
+        for (int j = 0; j < resultPerm[i].length() - 3; j += 2)
         {
-            int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j+1));
-            int cidadeB = doisCharParaInteiro(resultPerm[i].at(j+2), resultPerm[i].at(j+3));
+            int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j + 1));
+            int cidadeB = doisCharParaInteiro(resultPerm[i].at(j + 2), resultPerm[i].at(j + 3));
 
             double distancia = 0;
 
@@ -207,6 +221,7 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
     montaResposta(resposta, distanciaMinima);
 }
 
+// Metodo do caixeiro viajante usando branch and bound
 void CaixeiroViajante::caixeiroViajanteBranchAndBound()
 {
     limpar();
@@ -229,10 +244,10 @@ void CaixeiroViajante::caixeiroViajanteBranchAndBound()
     {
         resultPerm[i] = "00" + resultPerm[i] + "00";
         double somaDistancia = 0.0;
-        for (int j = 0; j < resultPerm[i].length() - 3; j+=2)
+        for (int j = 0; j < resultPerm[i].length() - 3; j += 2)
         {
-            int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j+1));
-            int cidadeB = doisCharParaInteiro(resultPerm[i].at(j+2), resultPerm[i].at(j+3));
+            int cidadeA = doisCharParaInteiro(resultPerm[i].at(j), resultPerm[i].at(j + 1));
+            int cidadeB = doisCharParaInteiro(resultPerm[i].at(j + 2), resultPerm[i].at(j + 3));
 
             if (somaDistancia > distanciaMinima)
             {
@@ -252,6 +267,7 @@ void CaixeiroViajante::caixeiroViajanteBranchAndBound()
     montaResposta(resposta, distanciaMinima);
 }
 
+// Metodo do caixeiro viajante usando algoritmo genetico
 void CaixeiroViajante::caixeiroViajanteGenetico()
 {
     limpar();
