@@ -22,7 +22,9 @@ public:
     void limpar();
     int concatenar(int x, int y);
     int charParaInteiro(char c);
-    int doisCharParaInteiro(char a, char b);
+    int charParaInteiro(char a, char b);
     void montaResposta(std::string s, double d);
+    std::vector<int> randomizarVetor(std::vector<int> array);
+    bool elementoExiste(int elemento, std::vector<int> array);
 };
 #endif
