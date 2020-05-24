@@ -19,7 +19,7 @@ vector<double> fitness;
 /* Metodos auxiliares
 */
 
-// Metodo para criar todas permutacoes de tamanho n
+// Metodo para criar todas as permutacoes de tamanho n
 void CaixeiroViajante::permutacao(int n, int k, int valores[], bool used[])
 {
     int i;
@@ -59,7 +59,6 @@ void CaixeiroViajante::permutacao(int n, int k, int valores[], bool used[])
 @param2 Cidade B
 @return resultado da distancia entre as duas cidades
 */
-
 double CaixeiroViajante::calcularDistancia(Cidade a, Cidade b)
 {   
     // Pegando as coordenadas das cidades
@@ -78,7 +77,7 @@ double CaixeiroViajante::calcularDistancia(Cidade a, Cidade b)
     return resultado;
 }
 
-// Limpa a lista de permutacoes
+// Limpa as variaveis globais
 void CaixeiroViajante::limpar()
 {
     resultPerm.clear();
@@ -109,9 +108,10 @@ int CaixeiroViajante::concatenar(int x, int y)
     return x * pow + y;
 }
 
-// Metodo que faz a conversao de char para int, tomando como base a tabela ascii
-// @param char c para conversao para inteiro
-// @return inteiro referente a esse char
+/* Metodo que faz a conversao de char para int, tomando como base a tabela ascii
+@param char c para conversao para inteiro
+@return inteiro referente a esse char
+*/
 int CaixeiroViajante::charParaInteiro(char c)
 {
     return int(c) - 48;
@@ -126,14 +126,21 @@ int CaixeiroViajante::charParaInteiro(char a, char b)
     return concatenar(int(a) - 48, int(b) - 48);
 }
 
+/* Metodo que randomiza um vetor, colocando os elementos em ordem aleatoria
+@param1 vector<int> array
+@return vector<int> array randomizado
+*/
 vector<int> CaixeiroViajante::randomizar(vector<int> item, int num) {
+    // Para cada número de vezes que será feita uma randomizacao
     for (int i = 0; i < num; i++) {
+        // Gera 2 indexes aleatorios para serem trocados
         int indexA = rand() % item.size();
         int indexB = rand() % item.size();
 
         if (indexA == 0 || indexB == 0) {
             continue;
         }
+        // Troca os elementos de posicao
         int temp = item[indexA];
         item[indexA] = item[indexB];
         item[indexB] = temp;
@@ -142,6 +149,10 @@ vector<int> CaixeiroViajante::randomizar(vector<int> item, int num) {
     return item;
 }
 
+/* Metodo que transforma um array de inteiros para uma string
+@param1 vector<int> vetor de inteiros
+@return double distancia entre as cidades
+*/
 std::string CaixeiroViajante::vectorParaString(std::vector<int> vetor) { // [0,1,2,0]
     string resultado = "";
     for (int i = 0; i < vetor.size(); i++) {
@@ -182,8 +193,8 @@ void CaixeiroViajante::montaResposta(string caminho, double distancia, int tipoR
     cout << "Reposta: " << caminho << "\n";
 }
 
-
-
+/* Metodo que transforma os pesos do array fitness para ser possivel selecionar via probabilidade
+*/
 void CaixeiroViajante::normalizar() {
     double soma = 0.0;
 
@@ -196,6 +207,9 @@ void CaixeiroViajante::normalizar() {
     }
 }
 
+/* Metodo que retorna um index do array de populacao considerando o peso
+@return int index da populacao baseado no peso dos elementos
+*/
 int CaixeiroViajante::pegarUm() {
     int index = 0;
     int r = rand() % fitness.size();
@@ -210,6 +224,10 @@ int CaixeiroViajante::pegarUm() {
     return index;
 }
 
+/* Metodo que troca duas posicoes de um array de inteiros
+@param1 vector<int> vetor de inteiros a serem mutados
+@return vector<int> vetor de inteiros com uma troca de posicao
+*/
 std::vector<int> CaixeiroViajante::mutacao(std::vector<int> item) {
     bool valido = false;
     int indexA = 0;
@@ -260,7 +278,6 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
     for (int i = 0; i < resultPerm.size(); i++)
     {
         resultPerm[i] = "00" + resultPerm[i] + "00";
-
 
         // Calculamos a distancia entre cada cidade e somamos da distancia final
         double somaDistancia = 0.0;
@@ -419,64 +436,83 @@ void CaixeiroViajante::caixeiroViajanteBranchAndBound()
 // Metodo do caixeiro viajante usando algoritmo genetico
 void CaixeiroViajante::caixeiroViajanteGenetico()
 {
+    // Limpamos o array global e inicializamos as variaveis
     limpar();
     const int tamanhoPopulacao = 1000;
     const int qtdRandomizacoes = 10;
     const int geracoes = 50;
     double distanciaMinima = DBL_MAX;
+    int posicaoMutada = -1;
     string resposta = "";
     vector<vector<int>> populacao;
     vector<int> ordem, original;
     vector<int> elementoMutado;
     srand(time(0));
 
+    // Inicializando array auxiliar
     for ( int i = 0; i < cidades.size(); i++ ) {
         original.push_back(i);
         ordem.push_back(i);
     }
 
-    int posicaoMutada = -1;
+    // Para cada geração
     for (int gen = 0; gen < geracoes; gen++) {
+
         // Criar uma população de caminhos aleatorios
         for ( int i = 0; i < tamanhoPopulacao; i++ ) {
+
+            // Se nao tiver posicao com mutacao
             if (i != posicaoMutada) {
                 ordem = randomizar(original, qtdRandomizacoes);
                 populacao.push_back(ordem);
+
+            // Se tiver um elemento com mutacao, colocar ele ao inves de gerar uma sequencia nova
             } else {
                 populacao.push_back(elementoMutado);
             }
         }
 
+        // Para cada elemento da populacao
         for ( int i = 0; i < populacao.size(); i++ ) {
             double somaDistancia = 0.0;
+
+
+            // Calculamos a distancia entre cada cidade e somamos da distancia final
             for (int j = 0; j < populacao[i].size() - 1; j++)
             {
                 Cidade cidadeA = cidades[populacao[i][j]];
                 Cidade cidadeB = cidades[populacao[i][j+1]];
                 somaDistancia = somaDistancia + calcularDistancia(cidadeA, cidadeB);
             }
+            // Se a soma dessas distancias desse caminho for a menor ate agora
             if (somaDistancia < distanciaMinima) {
                 distanciaMinima = somaDistancia;
                 resposta = vectorParaString(populacao[i]);
             }
 
-            // Calcular fitness
+            // Calcular fitness (peso) de cada caminho
+            // Quanto menor a distancia, maior o peso
             fitness.push_back( 1 / (somaDistancia + 1.0) );
         }
 
-        // Normalizar
+        // Normalizar os valores para ser possivel escolher um via probabilidade
         normalizar();
+
+        // Pegar um elemento da população baseado no seu peso
         posicaoMutada = pegarUm();
 
-        // Mutação com o melhor resultado
+        // Mutar o elemento selecionado
         elementoMutado = mutacao(populacao[posicaoMutada]);
         populacao[posicaoMutada] = elementoMutado;
 
+        // Limpar o array de populacao e pesos
         if (gen != geracoes-1) {
             populacao.clear();
             fitness.clear();
         }
     }
+
+    // Remover espacos da resposta e printar
     resposta.erase(remove(resposta.begin(), resposta.end(), ' '), resposta.end());
     montaResposta(resposta, distanciaMinima, 0);
 }
