@@ -17,8 +17,6 @@ int main()
     // Declaracao lista de cidades
     vector<Cidade> lista;
 
-    cout << "Started\n";
-
     lerEntrada(lista);
 
     // Instanciamos um objeto do tipo CaixeiroViajante com a lista de cidades
