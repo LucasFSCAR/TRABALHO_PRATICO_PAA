@@ -1,9 +1,9 @@
 # TRABALHO PRATICO PAA
 
 ### Execução:
- g++ caixeiroViajante.cpp cidade.cpp main.cpp -o main
- 
-./main < inputs/test1.txt > outputs/test1.txt
+ - g++ caixeiroViajante.cpp cidade.cpp main.cpp -o main
+
+ - ./main < inputs/test1.txt > outputs/test1.txt
 
 
 
