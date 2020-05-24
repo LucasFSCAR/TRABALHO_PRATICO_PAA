@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <random>
 #include <cstdlib>
+#include <sstream>
 
 using namespace std;
 vector<string> resultPerm;
@@ -153,25 +154,35 @@ std::string CaixeiroViajante::vectorParaString(std::vector<int> vetor) { // [0,1
 @param1 string caminho com todas cidades
 @param2 double distancia entre as cidades
 */
-void CaixeiroViajante::montaResposta(string caminho, double distancia)
+void CaixeiroViajante::montaResposta(string caminho, double distancia, int tipoResposta)
 {
     string resp = "";
     int item;
+    // Montar a resposta de acordo com os dois tipos de parametros que podem ser recebidos    
+    if (tipoResposta == 1) {
+        // Para cada cidade da string de caminho(pulando de 2 em 2)
+        for (int i = 0; i < caminho.length() - 2; i += 2)
+        {
+            // Pegamos a cidade e concatenamos com a anterior
+            item = charParaInteiro(caminho.at(i), caminho.at(i + 1)) + 1;
+            resp = resp + " " + to_string(item);
 
-    // Para cada cidade da string de caminho(pulando de 2 em 2)
-    for (int i = 0; i < caminho.length() - 2; i += 2)
-    {
-        // Pegamos a cidade e concatenamos com a anterior
-        item = charParaInteiro(caminho.at(i), caminho.at(i + 1)) + 1;
-        resp = resp + " " + to_string(item);
+        }
+    } else {
+        for (int i = 0; i < caminho.length() - 1; i++)
+        {
+            // Pegamos a cidade e concatenamos com a anterior
+            resp = resp + " " + to_string(charParaInteiro(caminho.at(i)) + 1);
+        }
     }
-
     caminho = resp;
 
     // Prints da distancia e resposta(caminho)
     cout << "Distancia: " << distancia << "\n";
     cout << "Reposta: " << caminho << "\n";
 }
+
+
 
 void CaixeiroViajante::normalizar() {
     double soma = 0.0;
@@ -186,7 +197,6 @@ void CaixeiroViajante::normalizar() {
 }
 
 int CaixeiroViajante::pegarUm() {
-    srand(time(0));
     int index = 0;
     int r = rand() % fitness.size();
 
@@ -194,7 +204,9 @@ int CaixeiroViajante::pegarUm() {
         r = r - fitness[index];
         index++;
     }
-    index--;
+    if (index != 0) {
+        index--;
+    }
     return index;
 }
 
@@ -270,7 +282,7 @@ void CaixeiroViajante::caixeiroViajanteForcaBruta()
     }
 
     // Por fim montamos e printamos a resposta
-    montaResposta(resposta, distanciaMinima);
+    montaResposta(resposta, distanciaMinima, 1);
 }
 
 // Metodo do caixeiro viajante usando programacao dinamica
@@ -344,7 +356,7 @@ void CaixeiroViajante::caixeiroViajanteDinamico()
     }
 
     // Por fim montamos e printamos a resposta
-    montaResposta(resposta, distanciaMinima);
+    montaResposta(resposta, distanciaMinima, 1);
 }
 
 // Metodo do caixeiro viajante usando branch and bound
@@ -401,16 +413,16 @@ void CaixeiroViajante::caixeiroViajanteBranchAndBound()
     }
 
     // Por fim montamos e printamos a resposta
-    montaResposta(resposta, distanciaMinima);
+    montaResposta(resposta, distanciaMinima, 1);
 }
 
 // Metodo do caixeiro viajante usando algoritmo genetico
 void CaixeiroViajante::caixeiroViajanteGenetico()
 {
     limpar();
-    const int tamanhoPopulacao = 10;
+    const int tamanhoPopulacao = 1000;
     const int qtdRandomizacoes = 10;
-    const int geracoes = 2;
+    const int geracoes = 50;
     double distanciaMinima = DBL_MAX;
     string resposta = "";
     vector<vector<int>> populacao;
@@ -435,26 +447,23 @@ void CaixeiroViajante::caixeiroViajanteGenetico()
             }
         }
 
-        for ( int i = 0; i < populacao.size(); i++ ) { // [0,1,2,0]
+        for ( int i = 0; i < populacao.size(); i++ ) {
             double somaDistancia = 0.0;
             for (int j = 0; j < populacao[i].size() - 1; j++)
             {
                 Cidade cidadeA = cidades[populacao[i][j]];
                 Cidade cidadeB = cidades[populacao[i][j+1]];
-
                 somaDistancia = somaDistancia + calcularDistancia(cidadeA, cidadeB);
             }
             if (somaDistancia < distanciaMinima) {
                 distanciaMinima = somaDistancia;
                 resposta = vectorParaString(populacao[i]);
-                
-                cout << "res1: " << resposta << '\n';
             }
-            
+
             // Calcular fitness
-            fitness.push_back( 1 / (somaDistancia+1) );
-    
+            fitness.push_back( 1 / (somaDistancia + 1.0) );
         }
+
         // Normalizar
         normalizar();
         posicaoMutada = pegarUm();
@@ -462,26 +471,12 @@ void CaixeiroViajante::caixeiroViajanteGenetico()
         // Mutação com o melhor resultado
         elementoMutado = mutacao(populacao[posicaoMutada]);
         populacao[posicaoMutada] = elementoMutado;
-        
-        for (int i = 0; i < elementoMutado.size(); i++) {
-            cout << elementoMutado[i] << "\n";
-        }
 
         if (gen != geracoes-1) {
             populacao.clear();
+            fitness.clear();
         }
     }
-
-    // populacao = 
-    // [
-    //   [1,2,3],
-    //   [3,2,1],
-    //   [2,1,3]
-    // ]
-
-
-    cout << "Distancia: " << distanciaMinima << "\n";
-    cout << "Reposta: " << resposta << "\n";
-
-
+    resposta.erase(remove(resposta.begin(), resposta.end(), ' '), resposta.end());
+    montaResposta(resposta, distanciaMinima, 0);
 }

@@ -53,33 +53,32 @@ int main()
     CaixeiroViajante cv(lista);
 
     // Executamos as funcoes do caixeiro viajante e salvamos os tempos para cada execucao
-    // clock_t inicio1 = clock();
-    // cv.caixeiroViajanteForcaBruta();
-    // clock_t fim1 = clock();
+    clock_t inicio1 = clock();
+    cv.caixeiroViajanteForcaBruta();
+    clock_t fim1 = clock();
 
-    // clock_t inicio2 = clock();
-    // cv.caixeiroViajanteDinamico();
-    // clock_t fim2 = clock();
+    clock_t inicio2 = clock();
+    //cv.caixeiroViajanteDinamico();
+    clock_t fim2 = clock();
 
-    // clock_t inicio3 = clock();
-    // cv.caixeiroViajanteBranchAndBound();
-    // clock_t fim3 = clock();
+    clock_t inicio3 = clock();
+    //cv.caixeiroViajanteBranchAndBound();
+    clock_t fim3 = clock();
 
-    //clock_t inicio4 = clock();
+    clock_t inicio4 = clock();
     cv.caixeiroViajanteGenetico();
-    //clock_t fim4 = clock();
+    clock_t fim4 = clock();
 
-    // double tempoDecorrido1 = double(fim1 - inicio1) / CLOCKS_PER_SEC;
-    // double tempoDecorrido2 = double(fim2 - inicio2) / CLOCKS_PER_SEC;
-    // double tempoDecorrido3 = double(fim3 - inicio3) / CLOCKS_PER_SEC;
-    // //double tempoDecorrido4 = double(fim4 - inicio4) / CLOCKS_PER_SEC;
+    double tempoDecorrido1 = double(fim1 - inicio1) / CLOCKS_PER_SEC;
+    double tempoDecorrido2 = double(fim2 - inicio2) / CLOCKS_PER_SEC;
+    double tempoDecorrido3 = double(fim3 - inicio3) / CLOCKS_PER_SEC;
+    double tempoDecorrido4 = double(fim4 - inicio4) / CLOCKS_PER_SEC;
 
     // Print dos tempos para cada execucao
-
-    // cout << "\nForça Bruta: " << tempoDecorrido1 << "\n";
-    // cout << "Dinamico: " << tempoDecorrido2 << "\n";
-    // cout << "Branch And Bound: " << tempoDecorrido3 << "\n";
-    // //cout << "Genetico: " << tempoDecorrido4 << "\n";
+    cout << "\nForça Bruta: " << tempoDecorrido1 << "\n";
+    cout << "Dinamico: " << tempoDecorrido2 << "\n";
+    cout << "Branch And Bound: " << tempoDecorrido3 << "\n";
+    cout << "Genetico: " << tempoDecorrido4 << "\n";
 
     return 0;
 }

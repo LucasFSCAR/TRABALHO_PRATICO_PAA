@@ -30,6 +30,6 @@ public:
     void normalizar();
     int pegarUm();
     std::vector<int> mutacao(std::vector<int>);
-    void montaResposta(std::string s, double d);
+    void montaResposta(std::string s, double d, int tipoResposta);
 };
 #endif
