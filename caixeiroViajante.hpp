@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 class CaixeiroViajante
 {
 
@@ -23,13 +25,11 @@ public:
     int concatenar(int x, int y);
     int charParaInteiro(char c);
     int charParaInteiro(char a, char b);
-    std::vector<int> randomizar(std::vector<int> item, int num);
+    vector<int> randomizar(vector<int> item, int num);
     std::string vectorParaString(std::vector<int> vetor);
     void normalizar();
     int pegarUm();
     std::vector<int> mutacao(std::vector<int>);
     void montaResposta(std::string s, double d);
-    std::vector<int> randomizarVetor(std::vector<int> array);
-    bool elementoExiste(int elemento, std::vector<int> array);
 };
 #endif

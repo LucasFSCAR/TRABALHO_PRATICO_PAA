@@ -125,7 +125,7 @@ int CaixeiroViajante::charParaInteiro(char a, char b)
     return concatenar(int(a) - 48, int(b) - 48);
 }
 
-std::vector<int> CaixeiroViajante::randomizar(std::vector<int> item, int num) {
+vector<int> CaixeiroViajante::randomizar(vector<int> item, int num) {
     for (int i = 0; i < num; i++) {
         int indexA = rand() % item.size();
         int indexB = rand() % item.size();
@@ -137,12 +137,11 @@ std::vector<int> CaixeiroViajante::randomizar(std::vector<int> item, int num) {
         item[indexA] = item[indexB];
         item[indexB] = temp;
     }
-
+    item.push_back(0);
     return item;
 }
 
-std::string CaixeiroViajante::vectorParaString(std::vector<int> vetor) {
-    // [1,2,3,4]
+std::string CaixeiroViajante::vectorParaString(std::vector<int> vetor) { // [0,1,2,0]
     string resultado = "";
     for (int i = 0; i < vetor.size(); i++) {
         resultado = resultado + " " + to_string(vetor[i]); 
@@ -174,53 +173,6 @@ void CaixeiroViajante::montaResposta(string caminho, double distancia)
     cout << "Reposta: " << caminho << "\n";
 }
 
-/* Metodo que verifica se um certo elemento existe dentro de um array de inteiros
-@param1 int elemento a verificar
-@param2 vector<int> array
-@return bool true ou false se o elemento existe ou nao
-*/
-bool CaixeiroViajante::elementoExiste(int elemento, vector<int> array) {
-    for (int x = 0; x < array.size(); x++) {
-        if (array[x] == elemento) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-/* Metodo que randomiza um vetor, colocando os elementos em ordem aleatoria
-@param1 vector<int> array
-@return vector<int> array randomizado
-*/
-vector<int> CaixeiroViajante::randomizarVetor(vector<int> array) {
-    // Inicializando variaveis e setando seed do randomizador
-    int aleatorio;
-    vector<int> gerados;
-    vector<int> retorno;
-    srand(time(NULL));
-    
-    // Para cada posicao do array
-    for (int x = 0; x < array.size(); x++) {
-        aleatorio = rand() % array.size();
-        
-        // Gero um numero aleatorio (entre 0 e size do array -1) e verifico se ele 
-        // ja foi sorteado alguma vez
-        while (elementoExiste(aleatorio, gerados)) {
-            aleatorio = rand() % array.size();
-        }
-
-        // Coloco esse valor gerado aleatorio no vetor que salva esses valores
-        gerados.push_back(aleatorio);
-
-        // Coloco no array a ser retornado o valor do array original no indice do numero aleatorio 
-        // gerado
-        retorno.push_back(array[aleatorio]);
-    }
-
-    return retorno;
-}
-
 void CaixeiroViajante::normalizar() {
     double soma = 0.0;
 
@@ -237,7 +189,6 @@ int CaixeiroViajante::pegarUm() {
     srand(time(0));
     int index = 0;
     int r = rand() % fitness.size();
-    cout << "aa: " << rand() << '\n';
 
     while (r > 0) {
         r = r - fitness[index];
@@ -254,7 +205,7 @@ std::vector<int> CaixeiroViajante::mutacao(std::vector<int> item) {
     while (!valido) {
         indexA = rand() % item.size();
         indexB = rand() % item.size();
-        if (indexA != 0 && indexB != 0 && indexA != item.size()-1 && indexB != item.size()-1) {
+        if (indexA != 0 && indexB != 0 && indexA != item.size()-1 && indexB != item.size()-1 && indexA != indexB) {
             valido = true;
         }
     }
@@ -459,11 +410,13 @@ void CaixeiroViajante::caixeiroViajanteGenetico()
     limpar();
     const int tamanhoPopulacao = 10;
     const int qtdRandomizacoes = 10;
-    const int geracoes = 1;
+    const int geracoes = 2;
     double distanciaMinima = DBL_MAX;
     string resposta = "";
     vector<vector<int>> populacao;
     vector<int> ordem, original;
+    vector<int> elementoMutado;
+    srand(time(0));
 
     for ( int i = 0; i < cidades.size(); i++ ) {
         original.push_back(i);
@@ -474,12 +427,15 @@ void CaixeiroViajante::caixeiroViajanteGenetico()
     for (int gen = 0; gen < geracoes; gen++) {
         // Criar uma população de caminhos aleatorios
         for ( int i = 0; i < tamanhoPopulacao; i++ ) {
-            //if (i != posicaoMutada) {
-            populacao[i] = (randomizar(ordem, qtdRandomizacoes));
+            if (i != posicaoMutada) {
+                ordem = randomizar(original, qtdRandomizacoes);
+                populacao.push_back(ordem);
+            } else {
+                populacao.push_back(elementoMutado);
+            }
         }
 
         for ( int i = 0; i < populacao.size(); i++ ) { // [0,1,2,0]
-            populacao[i].push_back(0);
             double somaDistancia = 0.0;
             for (int j = 0; j < populacao[i].size() - 1; j++)
             {
@@ -491,39 +447,41 @@ void CaixeiroViajante::caixeiroViajanteGenetico()
             if (somaDistancia < distanciaMinima) {
                 distanciaMinima = somaDistancia;
                 resposta = vectorParaString(populacao[i]);
+                
+                cout << "res1: " << resposta << '\n';
             }
             
             // Calcular fitness
-            fitness.push_back( 1 / (somaDistancia+1));
+            fitness.push_back( 1 / (somaDistancia+1) );
+    
         }
         // Normalizar
         normalizar();
         posicaoMutada = pegarUm();
 
         // Mutação com o melhor resultado
-        for ( int i = 0; i < populacao.size(); i++ ) {
-            for ( int j = 0; j < populacao[i].size(); j++ ) {
-                cout << populacao[i][j] << " ";
-            }
-            cout << '\n';
+        elementoMutado = mutacao(populacao[posicaoMutada]);
+        populacao[posicaoMutada] = elementoMutado;
+        
+        for (int i = 0; i < elementoMutado.size(); i++) {
+            cout << elementoMutado[i] << "\n";
         }
 
-        populacao[posicaoMutada] = mutacao(populacao[posicaoMutada]);
-    }
-
-    // Gerar proxima geração
-
-    // cout << "resp: " << resposta;
-
-    // for ( int i = 0; i < fitness.size(); i++ ) {
-    //    cout << fitness[i] << "\n";
-    // }
-    cout << "\n\n\n";
-
-    for ( int i = 0; i < populacao.size(); i++ ) {
-        for ( int j = 0; j < populacao[i].size(); j++ ) {
-            cout << populacao[i][j] << " ";
+        if (gen != geracoes-1) {
+            populacao.clear();
         }
-        cout << '\n';
     }
+
+    // populacao = 
+    // [
+    //   [1,2,3],
+    //   [3,2,1],
+    //   [2,1,3]
+    // ]
+
+
+    cout << "Distancia: " << distanciaMinima << "\n";
+    cout << "Reposta: " << resposta << "\n";
+
+
 }
